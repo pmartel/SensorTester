@@ -1,15 +1,10 @@
 /*
-  LiquidCrystal Library - Hello World
+ Sensor tester.
+ Uses the Elegoo IR transmitter/receiver to pass commands to the tester
+ * IR receiver to digital pin 6 
+ Uses the 16x2 LCD display to display results.
 
- Demonstrates the use a 16x2 LCD display.  The LiquidCrystal
- library works with all LCD displays that are compatible with the
- Hitachi HD44780 driver. There are many of them out there, and you
- can usually tell them by the 16-pin interface.
-
- This sketch prints "Hello World!" to the LCD
- and shows the time.
-
-  The circuit:
+  The LDC circuit:
  * (Put these in order
  * LCD VSS pin to ground
  * LCD VCC pin to 5V (should be VDD - POM)
@@ -26,19 +21,17 @@
  * LCD A pin through 220 Ohm resistor to 5V (added -POM)
  * LCD K pin to ground (added -POM)
 
- Library originally added 18 Apr 2008
- by David A. Mellis
- library modified 5 Jul 2009
- by Limor Fried (http://www.ladyada.net)
- example added 9 Jul 2009
- by Tom Igoe
- modified 22 Nov 2010
- by Tom Igoe
-
- This example code is in the public domain.
-
- http://www.arduino.cc/en/Tutorial/LiquidCrystal
+  The range finder is an SR-04 type
+ * trigger pin to digital pin 2
+ * echo pin to digital pin 3
  */
+
+/* TO-DO: add quadrature encoder and ballistic chronograph for velocity
+ *  add code to format a string into a character array and to display
+ *  the array on the LCD using the UP and DOWN arrows to scroll through the
+ *  array.
+ */ 
+ 
  // include the library code:
 #include "IRremote.h"
 #include <LiquidCrystal.h>
