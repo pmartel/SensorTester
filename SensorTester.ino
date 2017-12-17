@@ -232,18 +232,22 @@ void doBallistic( void ){
   pinMode( CHAN_A_PIN, INPUT_PULLUP );
   pinMode( CHAN_B_PIN, INPUT_PULLUP );
 #endif 
- 
+
+  lcd.home();
+  lcd << "Waiting input";
   while( digitalRead( CHAN_A_PIN ) == HIGH ){};
   tA = micros();
   while( digitalRead( CHAN_B_PIN ) == HIGH ){};
   tB = micros();
   lcd.clear();
+  lcd.setCursor(0,1);
   v = 1.e6/(tB-tA);
   vS = String( v, 2);
   //      0123456789012345
   lcd << "Speed        FPS";
-  lcd.setCursor( 12 - vS.length(), 0 );
+  lcd.setCursor( 12 - vS.length(), 1 );
   lcd << vS;
+  delay(500);
 }
 
 #define CHAR_L '-'
