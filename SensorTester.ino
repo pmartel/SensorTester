@@ -196,8 +196,15 @@ void loop() {
   }
 
   if (irrecv.decode(&results)) { // have we received an IR signal?
-    translateIR(); 
+    int irData = translateIR(); 
     irrecv.resume(); // receive the next value
+    // handle input
+    if ( (irData >= 0) && ( irData <= 3 )) { //update mode
+      mode = irData; 
+    }
+    else {
+      
+    }
   }  
 
 } // END loop()
@@ -324,19 +331,19 @@ int translateIR(void) { // takes action based on IR code received
     break;
   case 0xFF6897: 
     Serial.println("0"); 
-    mode = ret = 0;   
+    ret = 0;   
     break;
   case 0xFF30CF: 
     Serial.println("1"); 
-    mode = ret = 1;   
+    ret = 1;   
     break;
   case 0xFF18E7: 
     Serial.println("2"); 
-    mode = ret = 2;   
+    ret = 2;   
     break;
   case 0xFF7A85: 
     Serial.println("3"); 
-    mode = ret = 3;   
+    ret = 3;   
     break;
   case 0xFF10EF: 
     Serial.println("4");
