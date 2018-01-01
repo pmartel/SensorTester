@@ -70,12 +70,43 @@ decode_results results;      // create instance of 'decode_results'
 
 int mode = 0, oldMode = -1;
 
+// for menu
+const int menuRows = 3;
+char *menuStr[menuRows];
+int menuIdx = 0;
+const int upArrow = 1;
+const byte up[8] = {
+  B00100,
+  B00100,
+  B01110,
+  B01110,
+  B11111,
+  B11111,
+  B01110,
+};
+const int dnArrow = 2;
+const byte dn[8] = {
+  B01110,
+  B11111,
+  B11111,
+  B01110,
+  B01110,
+  B00100,
+  B00100,
+  };
+
  void setup() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   irrecv.enableIRIn(); // Start the receiver
   Serial.begin(115200);
-
+  // for menu
+  //            1234567890123456  -- LCD layout tool
+  menuStr[0] = "0:menu 1:range";
+  menuStr[1] = "2:quadE 3:speed";
+  menuStr[2] = "4:menu4 5:menu5";
+  lcd.createChar(upArrow, up);
+  lcd.createChar(dnArrow, dn);
 }
 
 void loop() {
@@ -90,7 +121,7 @@ void loop() {
     // set up new mode
     switch (mode) {
     case 0: // display menu
-      displayMenu(0);
+      displayMenu();
       break;
     case 1:  // rangefinder
       lcd.clear();
@@ -128,23 +159,39 @@ void loop() {
     int irData = translateIR(); 
     irrecv.resume(); // receive the next value
     // handle input
-    if ( (irData >= 0) && ( irData <= 3 )) { //update mode
-      mode = irData; 
-    }
-    else {
-      
-    }
+    switch (irData ){
+    case 0: case 1: case 2: case 3:
+       mode = irData; 
+       break;
+    case 16: //DOWN
+      menuIdx++;
+      if ( 0== mode ) displayMenu();
+      break;
+    case 18: //UP
+      menuIdx--;
+      if ( 0== mode ) displayMenu();
+      break;
+    default:
+      break;
+    } // if received IR signal
   }  
 
 } // END loop()
 
 // auxilliary functions
-void displayMenu( int first ) {
+void displayMenu( void ) {
   lcd.clear();
-  //      1234567890123456"
-  lcd << "0:menu 1:range";
+  if (menuIdx < 0 ) menuIdx = 0;
+  if (menuIdx > menuRows -2 ) menuIdx = menuRows -2;
+  Serial << "menuIdx:" << menuIdx << endl;
+  //      1234567890123456  -- layout tool
+  lcd << menuStr[menuIdx];
+  lcd.setCursor(15,0);
+  lcd.write(upArrow);
   lcd.setCursor(0,1);
-  lcd << "2:quad 3:speed";
+  lcd << menuStr[menuIdx+1];
+  lcd.setCursor(15,1);
+  lcd.write(dnArrow);
 }
 
 // note: this does not return until a shot passes
