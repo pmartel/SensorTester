@@ -62,78 +62,7 @@ SR04 sr04 = SR04(ECHO_PIN,TRIG_PIN);
 #define CHAN_A_PIN  A0
 #define CHAN_B_PIN  A1
 
-/***********************************************************/
-/* Think of having am array of characters, for now 8x16 and 
- *  having the LCD being a window into this array.  Keys
- *  can move the window up and down, and potentially left and right
- */
 
-class Display {
-  public:
-    Display( int rows,int columns ){
-      _rows = rows;
-      _columns = columns;
-      _display = malloc(rows *columns); 
-    }
-    Display(void){
-      Display(8,16);
-    }
-    ~Display(){
-      free(_display);
-    }
-    Clear(){
-      int i;
-      for (i=0; i < _rows * _columns; i++){
-        _display[i] = " ";
-      }
-      Home();
-    }
-    Home(){
-      _r = 0;
-      _c = 0;
-    }
-    //load the string s starting at position (r,c)
-    // special characters handled as noted
-    // for now, wrap characters around
-    Load( char* s, int row, int col ) {
-      char c;
-      
-      _r = row;
-      _c = col;
-      // place character
-      for ( ; *s != '\0'; s++ ) {
-        c = *s;
-        switch ( c ){
-        case '\n':
-          break;
-        case '\r':
-          break;
-        case '\b':
-          break;
-        case '\t':
-          break;
-        default:
-          break;
-        }
-        // update cursor
-      }
-      
-    }
-    Load( char* s ){
-      Load( s, 0, 0);
-    }
-    
-  private:
-    // size
-    int _rows;
-    int _columns;
-    // cursor position
-    int _r;
-    int _c;
-    char* _display;
-};
-
-//Display display();
 
 /*-----( Declare objects )-----*/
 IRrecv irrecv(RECEIVER_PIN);     // create instance of 'IRrecv'
